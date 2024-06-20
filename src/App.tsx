@@ -1,28 +1,6 @@
-const movieData: { movies: {
-  title: string;
-  year: number;
-  genre: string;
-  director: {
-    name: string;
-    age: number;
-    nationality: string;
-  };
-  cast: {
-    name: string;
-    role: string;
-    age: number;
-    awards: string[];
-  }[];
-  ratings: {
-    imdb: number;
-    rottenTomatoes: number;
-    metacritic: number;
-  };
-  boxOffice: {
-    budget: number;
-    gross: number;
-  };
-}[] } = {
+import './App.css';
+
+const movieData = {
   movies: [
     {
       title: "The Great Adventure",
@@ -126,34 +104,47 @@ const movieData: { movies: {
   ],
 };
 
-export default function App(): JSX.Element {
+export default function testFunction() {
 
-  const titlesAndAwards: { movieTitle: string; movieAwards: string[] }[] = []; 
-  let awards: string[] = []; 
+  const titlesAndAwards = []; 
+  const movie = movieData.movies; 
 
-  const displayFunction = (): void => {
+  for (let i = 0; i < movie.length; i++) {
+
+    const movieTitle = movie[i].title; 
+    const movieAwards = []; 
+
+    const movieCast = movie[i].cast; 
     
-    for (let i in movieData.movies) {
-      const movie = movieData.movies[i];  
+    for (let j = 0; j < movieCast.length; j++) {
 
-      for (let j in movie.cast) { 
-        const movieCast = movie.cast[j]; 
-        if (movieCast.awards.length > 0){ 
-          awards = awards.concat(movieCast.awards);
-          }
-       } 
-        if (awards.length > 0) {
-          titlesAndAwards.push({
-              movieTitle: movie.title,
-              movieAwards: awards
-          }); 
+       const award = movieCast[j].awards; 
+       if (award) { 
+          movieAwards.push(...award);
+       }
+    }
+ 
+    titlesAndAwards.push({
+      title: movieTitle,
+      awards: movieAwards
+    })
+  } 
+  
+  return(
+    <div className="container">
+    {titlesAndAwards.map((movie, index) => (
+      <div key={index}>
+        <h2 className="title-header">{movie.title}</h2>
+        <ul>
+          {movie.awards.map((award, idx) => (
+            <li key={idx}>{award}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+  ); 
 
-      }
-  }    
-  }
-  displayFunction()
+;}
 
-  return (
-
-  );
-};
+testFunction(); 
